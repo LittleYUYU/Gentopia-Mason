@@ -34,7 +34,7 @@ Now you are all set! Let's create your first Gentopia Agent.
 ## Quick Start: Clone a Vanilla LLM Agent
 GentPool has provided multiple template LLM agents. To get started, we will clone the "vanilla agent" from `GentPool/gentpool/pool/vanilla_template` with the following command:
 ```
-./clone_agent vanilla-template <your_agent_name> 
+./clone_agent vanilla_template <your_agent_name> 
 ```
 This command will initiate an agent template under `./GentPool/gentpool/pool/<your_agent_name>`. The agent configuration can be found in `./GentPool/gentpool/pool/<your_agent_name>/agent.yaml` (note the agent type `vanilla`). The vanilla prompt it uses can be found in the source code of `Gentopia`; see `./Gentopia/gentopia/prompt/vanilla.py`.
 
