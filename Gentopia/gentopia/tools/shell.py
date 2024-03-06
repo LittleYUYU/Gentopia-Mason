@@ -131,7 +131,7 @@ def get_default_bash_process() -> BashProcess:
 
 
 class RunShellArgs(BaseModel):
-    bash_commands: str = Field(..., description="a sequence of shell commands")
+    commands: str = Field(..., description="a sequence of shell commands")
 
 
 class RunShell(BaseTool):
