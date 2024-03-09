@@ -1,3 +1,0 @@
-myst-parser
-nbsphinx
-python_docs_theme
