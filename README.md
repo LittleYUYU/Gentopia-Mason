@@ -2,7 +2,8 @@
 
 **IMPORTANT NOTICE: This code repository was adapted from [Gentopia.AI](https://github.com/Gentopia-AI) to support Mason Activities.** 
 
-Author: Ziyu Yao (ziyuyao@gmu.edu)
+Authors: Ziyu Yao (ziyuyao@gmu.edu) and Murong Yue (myue@gmu.edu)
+
 Copyright and license should go to Gentopia.AI.
 
 ## Installation 💻
