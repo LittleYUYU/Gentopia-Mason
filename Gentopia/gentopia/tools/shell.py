@@ -1,20 +1,17 @@
 import platform
 import re
 import subprocess
-from typing import AnyStr
-from typing import List
+from typing import AnyStr, List, Union
 from uuid import uuid4
-import pexpect
 from gentopia.tools.basetool import *
 
-
-def _lazy_import_pexpect() -> pexpect:
-    """Import pexpect only when needed."""
+# Define a function to load `pexpect` lazily only on Unix/Linux systems
+def _lazy_import_pexpect() -> 'pexpect':
+    """Import pexpect only when needed on Unix/Linux."""
     if platform.system() == "Windows":
         raise ValueError("Persistent bash processes are not yet supported on Windows.")
     try:
         import pexpect
-
     except ImportError:
         raise ImportError(
             "pexpect required for persistent bash processes."
@@ -23,8 +20,24 @@ def _lazy_import_pexpect() -> pexpect:
     return pexpect
 
 
+# Define a cross-platform `run_command` function for non-persistent command execution
+def run_command(command: str) -> str:
+    """Run a command using subprocess for Windows compatibility."""
+    try:
+        output = subprocess.run(
+            command,
+            shell=True,
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+        ).stdout.decode()
+    except subprocess.CalledProcessError as error:
+        return error.output.decode() if error.output else str(error)
+    return output
+
+
 class BashProcess:
-    """Executes bash commands and returns the output."""
+    """Executes bash commands and returns the output, supporting persistent processes on Unix/Linux only."""
 
     def __init__(
             self,
@@ -37,21 +50,21 @@ class BashProcess:
         self.return_err_output = return_err_output
         self.prompt = ""
         self.process = None
+
+        # Only initialize persistent mode on Unix/Linux
         if persistent:
+            if platform.system() == "Windows":
+                raise ValueError("Persistent bash processes are not supported on Windows.")
             self.prompt = str(uuid4())
             self.process = self._initialize_persistent_process(self.prompt)
 
     @staticmethod
-    def _initialize_persistent_process(prompt: str) -> pexpect.spawn:
-        # Start bash in a clean environment
-        # Doesn't work on windows
+    def _initialize_persistent_process(prompt: str) -> 'pexpect.spawn':
         pexpect = _lazy_import_pexpect()
         process = pexpect.spawn(
             "env", ["-i", "bash", "--norc", "--noprofile"], encoding="utf-8"
         )
-        # Set the custom prompt
         process.sendline("PS1=" + prompt)
-
         process.expect_exact(prompt, timeout=10)
         return process
 
@@ -60,56 +73,45 @@ class BashProcess:
         if isinstance(commands, str):
             commands = [commands]
         commands = ";".join(commands)
-        # print(commands)
+
         if self.process is not None:
-            return self._run_persistent(
-                commands,
-            )
+            # Run in persistent mode for Unix/Linux
+            return self._run_persistent(commands)
         else:
+            # Run in non-persistent mode using `run_command` for both Windows and Unix/Linux
             return self._run(commands)
 
     def _run(self, command: str) -> str:
-        """Run commands and return final output."""
-        try:
-            output = subprocess.run(
-                command,
-                shell=True,
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            ).stdout.decode()
-        except subprocess.CalledProcessError as error:
-            if self.return_err_output:
-                return error.stdout.decode()
-            return str(error)
+        """Run a single command and return final output using subprocess (cross-platform)."""
+        output = run_command(command)
         if self.strip_newlines:
             output = output.strip()
         return output
 
     def process_output(self, output: str, command: str) -> str:
-        # Remove the command from the output using a regular expression
+        """Remove the command from the output using a regular expression."""
         pattern = re.escape(command) + r"\s*\n"
         output = re.sub(pattern, "", output, count=1)
         return output.strip()
 
     def _run_persistent(self, command: str) -> str:
-        """Run commands and return final output."""
-        # print("entering _run_persistent")
+        """Run commands and return final output in persistent mode (Unix/Linux only)."""
         pexpect = _lazy_import_pexpect()
         if self.process is None:
             raise ValueError("Process not initialized")
-        self.process.sendline(command)
 
-        # Clear the output with an empty string
+        self.process.sendline(command)
         self.process.expect(self.prompt, timeout=10)
-        self.process.sendline("")
+        self.process.sendline("")  # Clear the output with an empty string
 
         try:
             self.process.expect([self.prompt, pexpect.EOF], timeout=10)
         except pexpect.TIMEOUT:
             return f"Timeout error while executing command {command}"
+
         if self.process.after == pexpect.EOF:
             return f"Exited with error status: {self.process.exitstatus}"
+
         output = self.process.before
         output = self.process_output(output, command)
         if self.strip_newlines:
@@ -126,7 +128,7 @@ def get_platform() -> str:
 
 
 def get_default_bash_process() -> BashProcess:
-    """Get file path from string."""
+    """Initialize BashProcess based on the operating system."""
     return BashProcess(return_err_output=True)
 
 
@@ -142,8 +144,7 @@ class RunShell(BaseTool):
     process: BashProcess = get_default_bash_process()
 
     def _run(self, commands: AnyStr) -> Any:
-        '''Run commands and return final output.
-        '''
+        """Run commands and return final output."""
         return self.process.run(commands)
 
     async def _arun(self, *args: Any, **kwargs: Any) -> Any:
@@ -151,5 +152,6 @@ class RunShell(BaseTool):
 
 
 if __name__ == "__main__":
+    # Example usage to test the RunShell class
     ans = RunShell()._run("mkdir test/hello")
     print(ans)
