@@ -1,5 +1,5 @@
 # Agent Config
-name: chatgpt
+name: chatgpt_4_turbo
 type: vanilla
 version: NA
 description: Simple GPT-4-turbo LLM
