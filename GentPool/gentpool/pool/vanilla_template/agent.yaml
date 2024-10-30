@@ -2,11 +2,11 @@
 name: vanilla_template
 version: 0.0.1
 type: vanilla
-description: A plain gpt-4 LLM.
+description: Mini version of gpt-4 LLM.
 target_tasks:
   - anything to do with an LLM
 llm:
-  model_name: gpt-4
+  model_name: gpt-4o-mini
   params:
     temperature: 0.0
     top_p: 0.9
