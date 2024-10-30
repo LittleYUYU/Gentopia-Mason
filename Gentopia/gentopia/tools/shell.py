@@ -5,7 +5,7 @@ from typing import AnyStr, List, Union
 from uuid import uuid4
 from gentopia.tools.basetool import *
 
-# Define a function to load pexpect lazily only on Unix/Linux systems
+# Define a function to load `pexpect` lazily only on Unix/Linux systems
 def _lazy_import_pexpect() -> 'pexpect':
     """Import pexpect only when needed on Unix/Linux."""
     if platform.system() == "Windows":
@@ -15,12 +15,12 @@ def _lazy_import_pexpect() -> 'pexpect':
     except ImportError:
         raise ImportError(
             "pexpect required for persistent bash processes."
-            " To install, run pip install pexpect."
+            " To install, run `pip install pexpect`."
         )
     return pexpect
 
 
-# Define a cross-platform run_command function for non-persistent command execution
+# Define a cross-platform `run_command` function for non-persistent command execution
 def run_command(command: str) -> str:
     """Run a command using subprocess for Windows compatibility."""
     try:
@@ -39,7 +39,7 @@ def run_command(command: str) -> str:
 class BashProcess:
     """Executes bash commands and returns the output, supporting persistent processes on Unix/Linux only."""
 
-    def _init_(
+    def __init__(
             self,
             strip_newlines: bool = False,
             return_err_output: bool = False,
@@ -78,7 +78,7 @@ class BashProcess:
             # Run in persistent mode for Unix/Linux
             return self._run_persistent(commands)
         else:
-            # Run in non-persistent mode using run_command for both Windows and Unix/Linux
+            # Run in non-persistent mode using `run_command` for both Windows and Unix/Linux
             return self._run(commands)
 
     def _run(self, command: str) -> str:
@@ -151,7 +151,7 @@ class RunShell(BaseTool):
         raise NotImplementedError
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     # Example usage to test the RunShell class
     ans = RunShell()._run("mkdir test/hello")
     print(ans)
