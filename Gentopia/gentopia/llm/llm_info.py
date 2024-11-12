@@ -10,6 +10,7 @@ TYPES = {
     "gpt-4-0613": "OpenAI",
     "gpt-3.5-turbo-16k-0613": "OpenAI",
     "gpt-4-32k-0613": "OpenAI",
+    "gpt-4o-mini": "OpenAI",
     "t5-vicuna-3b": "Huggingface",
     "replit-3b": "Huggingface",
     "camel-5b": "Huggingface",
