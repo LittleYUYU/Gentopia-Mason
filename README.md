@@ -6,13 +6,15 @@ Authors: Ziyu Yao (ziyuyao@gmu.edu), Saurabh Srivastava (ssrivas6@gmu.edu), and 
 
 Copyright and license should go to Gentopia.AI.
 
+**Windows Users: We currently only support Powershell.**
+
 ## Installation 💻
 First, clone this repository:
 ```
 git clone git@github.com:LittleYUYU/Gentopia-Mason.git
 cd Gentopia-Mason
 ```
-If you have not setup your keys yet, you can clone the repository using the following command:
+If you have not set up your ssh keys yet, you may receive an error. Instead, you can clone the repository using the following command:
 ```
 git clone https://github.com/LittleYUYU/Gentopia-Mason.git
 ```
@@ -25,6 +27,7 @@ pip install -r requirements.txt
 ```
 
 Most of the agent construction and execution activities will happen within `GentPool`. For the `gentopia` library to be used within `GentPool`, set up the global environment:
+
 **For Linux/Mac**
 ```
 export PYTHONPATH="$PWD/Gentopia:$PYTHONPATH"
@@ -34,8 +37,8 @@ export PYTHONPATH="$PWD/Gentopia:$PYTHONPATH"
 $env:PYTHONPATH = "$PWD/Gentopia;$env:PYTHONPATH"
 ```
 
-In addition, since we will be using OpenAI's API, we also need to create a `.env` file under `GentPool` and put the API Key inside. The key will be registered as environmental variables at run time.
-First, let's change the directory:
+In addition, since we will be using OpenAI's API, we also need to create a `.env` file under `GentPool` and put the API Key inside. The key will be registered as environmental variables at run time. To do this,
+first, let's change the directory:
 ```
 cd GentPool
 ```
@@ -96,10 +99,4 @@ The available functions to the scholar agent have been listed in its configurati
 
 Now, you are all set to query this scholar agent for the latest papers by certain authors, the summary of a certain paper, paper citations, etc.
 
-
-## Remove an Agent
-Sometimes an agent can upset you. To wipe it out completely,
-```
-./delete_agent <your_agent_name> 
-```
 
