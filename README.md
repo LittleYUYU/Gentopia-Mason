@@ -29,7 +29,7 @@ Most of the agent construction and execution activities will happen within `Gent
 ```
 export PYTHONPATH="$PWD/Gentopia:$PYTHONPATH"
 ```
-**For Windows**: 
+**For Windows (Windows Powershell)**: 
 ```
 $env:PYTHONPATH = "$PWD/Gentopia;$env:PYTHONPATH"
 ```
@@ -46,7 +46,7 @@ touch .env
 echo "OPENAI_API_KEY=<your_openai_api_key>" >> .env
 ```
 
-**For Windows**
+**For Windows (Windows Powershell)**
 ```
 $env:OPENAI_API_KEY="<YOUR KEY>"
 ```
@@ -61,7 +61,7 @@ GentPool has provided multiple template LLM agents. To get started, we will clon
 ./clone_agent vanilla_template <your_agent_name> 
 ```
 
-**For Windows**
+**For Windows (Windows Powershell)**
 ```
 .\clone_agent.bat vanilla_template <your_agent_name> #note the .bat file 
 ```
@@ -84,7 +84,7 @@ This is based on the `scholar` agent we have created in the pool. As before, in 
 ./clone_agent scholar <your_agent_name> 
 ```
 
-**For Windows**
+**For Windows (Windows Powershell)**
 ```
 .\clone_agent.bat scholar <your_agent_name> #note the .bat file 
 ```
