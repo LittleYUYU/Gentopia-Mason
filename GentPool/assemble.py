@@ -1,5 +1,10 @@
 import argparse
 import os
+import sys
+
+gentopia_path = os.path.join(os.path.dirname(os.getcwd()), "Gentopia")
+if gentopia_path not in sys.path:
+    sys.path.insert(0, gentopia_path)
 
 import dotenv
 from gentopia import chat
