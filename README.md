@@ -12,6 +12,11 @@ First, clone this repository:
 git clone git@github.com:LittleYUYU/Gentopia-Mason.git
 cd Gentopia-Mason
 ```
+If you have not setup your keys yet, you can clone the repository using the following command:
+```
+git clone https://github.com/LittleYUYU/Gentopia-Mason.git
+```
+
 Next, we will create a virtual environment and install the library:
 ```
 conda create --name gentenv python=3.10
@@ -20,23 +25,47 @@ pip install -r requirements.txt
 ```
 
 Most of the agent construction and execution activities will happen within `GentPool`. For the `gentopia` library to be used within `GentPool`, set up the global environment:
+**For Linux/Mac**
 ```
 export PYTHONPATH="$PWD/Gentopia:$PYTHONPATH"
 ```
+**For Windows**: 
+```
+$env:PYTHONPATH = "$PWD/Gentopia;$env:PYTHONPATH"
+```
+
 In addition, since we will be using OpenAI's API, we also need to create a `.env` file under `GentPool` and put the API Key inside. The key will be registered as environmental variables at run time.
+First, let's change the directory:
 ```
 cd GentPool
+```
+
+**For Linux/Mac**
+```
 touch .env
 echo "OPENAI_API_KEY=<your_openai_api_key>" >> .env
+```
+
+**For Windows**
+```
+$env:OPENAI_API_KEY="<YOUR KEY>"
 ```
 Now you are all set! Let's create your first Gentopia Agent.
 
 
 ## Quick Start: Clone a Vanilla LLM Agent
 GentPool has provided multiple template LLM agents. To get started, we will clone the "vanilla agent" from `GentPool/gentpool/pool/vanilla_template` with the following command:
+
+**For Linux/Mac**
 ```
 ./clone_agent vanilla_template <your_agent_name> 
 ```
+
+**For Windows**
+```
+.\clone_agent.bat vanilla_template <your_agent_name> #note the .bat file 
+```
+
 This command will initiate an agent template under `./GentPool/gentpool/pool/<your_agent_name>`. The agent configuration can be found in `./GentPool/gentpool/pool/<your_agent_name>/agent.yaml` (note the agent type `vanilla`). The vanilla prompt it uses can be found in the source code of `Gentopia`; see `./Gentopia/gentopia/prompt/vanilla.py`.
 
 You can now run your agent via:
@@ -49,9 +78,17 @@ This vanilla agent simply sends the received user query to the backend LLM and r
 In the second trial, we will create a Scholar agent which is augmented with multiple functions to access Google Scholar in real time.
 
 This is based on the `scholar` agent we have created in the pool. As before, in this demo we simply clone it:
+
+**For Linux/Mac**
 ```
 ./clone_agent scholar <your_agent_name> 
 ```
+
+**For Windows**
+```
+.\clone_agent.bat scholar <your_agent_name> #note the .bat file 
+```
+
 Like before, this command created an agent under `./GentPool/gentpool/pool/<your_agent_name>`. Note from its configuration that scholar is an `openai`-type agent. As stated in its [Gentopia's implementation](./Gentopia/gentopia/agent/openai), this type of agent allows for function calling:
 > OpenAIFunctionChatAgent class inherited from BaseAgent. Implementing OpenAI function call api as agent.
 
