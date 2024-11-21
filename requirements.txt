@@ -12,7 +12,7 @@ backoff==2.2.1
 bcrypt==4.0.1
 beautifulsoup4==4.12.2
 bibtexparser==1.4.1
-cchardet==2.1.7; sys_platform != 'win32'
+cchardet==2.1.7; sys_platform != 'win32' and sys_platform != 'cygwin'
 certifi==2023.7.22
 chardet==5.2.0
 charset-normalizer==3.3.0
@@ -132,7 +132,7 @@ typing_extensions==4.8.0
 tzdata==2023.3
 urllib3==2.0.6
 uvicorn==0.23.2
-uvloop==0.17.0; sys_platform != 'win32'
+uvloop==0.17.0; sys_platform != 'win32' and sys_platform != 'cygwin'
 watchfiles==0.20.0
 wcwidth==0.2.8
 websockets==11.0.3
